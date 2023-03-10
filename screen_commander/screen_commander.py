@@ -23,15 +23,13 @@ class ScreenCommander:
         for sock in conf:
             proc = subprocess.Popen('screen -S %s -d -m' % sock, shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
             i = -1
-            for tabs in conf[sock]:
-                i += 1
-                for tab in tabs.keys():
-                    proc = subprocess.Popen('screen -S %s -X screen -t %s' % (sock, tab), shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
-                    cmds = conf[sock][i][tab]
-                    for cmd in cmds:
-                        proc = subprocess.Popen("screen -S %s -p %s -X eval 'stuff \"%s\"\\015'" % (sock, tab, cmd), shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
-                        sleep(0.02)
-        proc = subprocess.Popen('screen -r %s -X hardstatus alwayslastline \"%s\"' % (sock, self.screen_status), shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+            for tab in conf[sock]:
+                proc = subprocess.Popen('screen -S %s -X screen -t %s' % (sock, tab), shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+                cmds = conf[sock][tab]
+                for cmd in cmds:
+                    proc = subprocess.Popen("screen -S %s -p %s -X eval 'stuff \"%s\"\\015'" % (sock, tab, cmd), shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+                    sleep(0.02)
+            proc = subprocess.Popen('screen -r %s -X hardstatus alwayslastline \"%s\"' % (sock, self.screen_status), shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
 
 
     def kill(self, filename):

@@ -1,26 +1,26 @@
 complex_group1:
-  - test1:
+  test1:
     - echo command 1 in complex_group1 test1
     - echo command 2 in complex_group1 test1
     - echo command 3 in complex_group1 test1
-  - test2:
+  test2:
     - echo command 1 in complex_group1 test2
     - echo command 2 in complex_group1 test2
     - echo command 3 in complex_group1 test2
-  - test3:
+  test3:
     - echo command 1 in complex_group1 test3
     - echo command 2 in complex_group1 test3
     - echo command 3 in complex_group1 test3
 complex_group2:
-  - test1:
+  test1:
     - echo command 1 in complex_group2 test1
     - echo command 2 in complex_group2 test1
     - echo command 3 in complex_group2 test1
-  - test2:
+  test2:
     - echo command 1 in complex_group2 test2
     - echo command 2 in complex_group2 test2
     - echo command 3 in complex_group2 test2
-  - test3:
+  test3:
     - echo command 1 in complex_group2 test3
     - echo command 2 in complex_group2 test3
     - echo command 3 in complex_group2 test3
