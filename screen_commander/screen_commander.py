@@ -22,9 +22,11 @@ class ScreenCommander:
 
         for sock in conf:
             proc = subprocess.Popen('screen -S %s -d -m' % sock, shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+            sleep(0.02)
             i = -1
             for tab in conf[sock]:
                 proc = subprocess.Popen('screen -S %s -X screen -t %s' % (sock, tab), shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+                sleep(0.02)
                 cmds = conf[sock][tab]
                 for cmd in cmds:
                     proc = subprocess.Popen("screen -S %s -p %s -X eval 'stuff \"%s\"\\015'" % (sock, tab, cmd), shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
