@@ -13,17 +13,13 @@ class ScreenCommander:
         self.screen_status = '%{= .} %-Lw%{= .}%> %n%f %t*%{= .}%+Lw%< %-=%{g}(%{d}%H/%l%{g})'
 
     def run(self, filename):
-        if os.path.exists(filename):
-            with open(filename, 'r') as f:
-                conf = yaml.load(f.read(), SafeLoader)
-        else:
-            print("invalid filename %s\n" % filename)
+        conf = self._check_file(filename)
+        if not conf:
             return
 
         for sock in conf:
             proc = subprocess.Popen('screen -S %s -d -m' % sock, shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
             sleep(0.02)
-            i = -1
             for tab in conf[sock]:
                 proc = subprocess.Popen('screen -S %s -X screen -t %s' % (sock, tab), shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
                 sleep(0.02)
@@ -33,13 +29,22 @@ class ScreenCommander:
                     sleep(0.02)
             proc = subprocess.Popen('screen -r %s -X hardstatus alwayslastline \"%s\"' % (sock, self.screen_status), shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
 
+    def execute(self, filename):
+        conf = self._check_file(filename)
+        if not conf:
+            return
+
+        for sock in conf:
+            for tab in conf[sock]:
+                cmds = conf[sock][tab]
+                for cmd in cmds:
+                    proc = subprocess.Popen("screen -S %s -p %s -X eval 'stuff \"%s\"\\015'" % (sock, tab, cmd), shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+                    sleep(0.02)
+
 
     def kill(self, filename):
-        if os.path.exists(filename):
-            with open(filename, 'r') as f:
-                conf = yaml.load(f.read(), SafeLoader)
-        else:
-            print("invalid filename %s\n" % filename)
+        conf = self._check_file(filename)
+        if not conf:
             return
 
         proc_to_kill = []
@@ -51,3 +56,11 @@ class ScreenCommander:
                     proc_id = line.split('\t')[1].split('.')[0]
                     proc_to_kill.append(proc_id)
         proc = subprocess.Popen('kill %s' % " ".join(proc_to_kill), shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+
+    def _check_file(self, filename):
+        if os.path.exists(filename):
+            with open(filename, 'r') as f:
+                return yaml.load(f.read(), SafeLoader)
+        else:
+            print("invalid filename %s\n" % filename)
+            return None

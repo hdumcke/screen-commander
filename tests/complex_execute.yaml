@@ -1,0 +1,6 @@
+complex_group1:
+  test2:
+    - echo another command in complex_group1 test2
+complex_group2:
+  test1:
+    - echo another command in complex_group2 test1

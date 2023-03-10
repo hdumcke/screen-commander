@@ -54,6 +54,12 @@ crtl-a <n>
 
 where <n> is the number of the tab as shown on the status line.
 
+To execute additional commands in some tabs use:
+
+```
+screen-commander execute tests/simple_execute.yaml
+```
+
 To kill all running tabs use:
 
 ```

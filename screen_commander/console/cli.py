@@ -24,6 +24,19 @@ def run(filename):
 
 @screen_commander.command()
 @click.argument('filename')
+def execute(filename):
+    """execute
+
+        \b
+        Executes commands in tabs of a running deployment.
+        """
+
+    sc = ScreenCommander()
+    sc.execute(filename)
+
+
+@screen_commander.command()
+@click.argument('filename')
 def kill(filename):
     """kill
 
