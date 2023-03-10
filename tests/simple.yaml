@@ -1,0 +1,4 @@
+simple:
+  - tab:
+    - echo command 1
+    - echo command 2
